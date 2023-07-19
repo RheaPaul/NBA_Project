@@ -175,7 +175,7 @@
                     <label for="indirect">Indirect %</label>
                     <input type="number" name="indirect" min="1" max="100" placeholder="Indirect %" required class="form-control" min="0" max="100">
                 </div> -->
-                <div class="form-group"> 
+                <!-- <div class="form-group"> 
                     <label for="internal">Internal %</label>
                     <input type="number" name="internal" id="internal" min="1" max="100" placeholder="Internal %" required class="form-control" readonly>
                 </div>
@@ -190,6 +190,36 @@
                 <div class="form-group">
                     <label for="indirect">Indirect %</label>
                     <input type="number" name="indirect" id="indirect" min="1" max="100" placeholder="Indirect %" required class="form-control" readonly>
+                </div> -->
+                <div class="form-group"> 
+                    <!-- <label>Assessment Percentage</label> -->
+                    <div class="row">
+                        <div class="col">
+                            <label for="external">External %</label>
+                            <input type="number" name="external" id="external" min="1" max="100" placeholder="External %" required class="form-control" onchange="calculateInternal()">
+                        </div>
+                        <div class="col-auto my-auto">-</div>
+                        <div class="col">
+                            <label for="internal">Internal %</label>
+                            <input type="number" name="internal" id="internal" min="1" max="100" placeholder="Internal %" required class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- For Direct and Indirect -->
+                <div class="form-group"> 
+                    <!-- <label>Measurement Percentage</label> -->
+                    <div class="row">
+                        <div class="col">
+                            <label for="direct">Direct %</label>
+                            <input type="number" name="direct" id="direct" min="1" max="100" placeholder="Direct %" required class="form-control" onchange="calculateIndirect()">
+                        </div>
+                        <div class="col-auto my-auto">-</div>
+                        <div class="col">
+                            <label for="indirect">Indirect %</label>
+                            <input type="number" name="indirect" id="indirect" min="1" max="100" placeholder="Indirect %" required class="form-control" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="defaultThreshold">Default Threshold %</label>
@@ -573,45 +603,62 @@ document.getElementById("external").oninput = function() {
             document.body.removeChild(downloadLink);
         };
     
-        document.getElementById("direct").oninput = function() {
-            var directValue = parseInt(this.value);
-            var externalValue = parseInt(document.getElementById("external").value);
-            if (!isNaN(directValue) && directValue <= 100) {
-                var internal = document.getElementById("internal");
-                internal.value = 100 - directValue;
-                internal.style.backgroundColor = "#D3D3D3";  // LightGray color
-                if (!isNaN(externalValue) && externalValue <= 100) {
-                    var indirect = document.getElementById("indirect");
-                    indirect.value = directValue - externalValue;
-                    indirect.style.backgroundColor = "#D3D3D3";  // LightGray color
-                } else {
-                    document.getElementById("indirect").value = "";
-                }
-            } else {
-                document.getElementById("internal").value = "";
-                document.getElementById("indirect").value = "";
-            }
-        };
+        // document.getElementById("direct").oninput = function() {
+        //     var directValue = parseInt(this.value);
+        //     var externalValue = parseInt(document.getElementById("external").value);
+        //     if (!isNaN(directValue) && directValue <= 100) {
+        //         var internal = document.getElementById("internal");
+        //         internal.value = 100 - directValue;
+        //         internal.style.backgroundColor = "#D3D3D3";  // LightGray color
+        //         if (!isNaN(externalValue) && externalValue <= 100) {
+        //             var indirect = document.getElementById("indirect");
+        //             indirect.value = directValue - externalValue;
+        //             indirect.style.backgroundColor = "#D3D3D3";  // LightGray color
+        //         } else {
+        //             document.getElementById("indirect").value = "";
+        //         }
+        //     } else {
+        //         document.getElementById("internal").value = "";
+        //         document.getElementById("indirect").value = "";
+        //     }
+        // };
     
-        document.getElementById("external").oninput = function() {
-            var externalValue = parseInt(this.value);
-            var directValue = parseInt(document.getElementById("direct").value);
-            if (!isNaN(externalValue) && externalValue <= 100) {
-                var indirect = document.getElementById("indirect");
-                indirect.value = 100 - externalValue;
-                indirect.style.backgroundColor = "#D3D3D3";  // LightGray color
-                if (!isNaN(directValue) && directValue <= 100) {
-                    var internal = document.getElementById("internal");
-                    internal.value = directValue - externalValue;
-                    internal.style.backgroundColor = "#D3D3D3";  // LightGray color
-                } else {
-                    document.getElementById("internal").value = "";
-                }
-            } else {
-                document.getElementById("indirect").value = "";
-                document.getElementById("internal").value = "";
-            }
-        };
+        // document.getElementById("external").oninput = function() {
+        //     var externalValue = parseInt(this.value);
+        //     var directValue = parseInt(document.getElementById("direct").value);
+        //     if (!isNaN(externalValue) && externalValue <= 100) {
+        //         var indirect = document.getElementById("indirect");
+        //         indirect.value = 100 - externalValue;
+        //         indirect.style.backgroundColor = "#D3D3D3";  // LightGray color
+        //         if (!isNaN(directValue) && directValue <= 100) {
+        //             var internal = document.getElementById("internal");
+        //             internal.value = directValue - externalValue;
+        //             internal.style.backgroundColor = "#D3D3D3";  // LightGray color
+        //         } else {
+        //             document.getElementById("internal").value = "";
+        //         }
+        //     } else {
+        //         document.getElementById("indirect").value = "";
+        //         document.getElementById("internal").value = "";
+        //     }
+        // };
+        function calculateInternal() {
+        var external = parseInt(document.getElementById('external').value);
+        if (!isNaN(external)) {
+            document.getElementById('internal').value = 100 - external;
+        } else {
+            document.getElementById('internal').value = "";
+        }
+    }
+
+    function calculateIndirect() {
+        var direct = parseInt(document.getElementById('direct').value);
+        if (!isNaN(direct)) {
+            document.getElementById('indirect').value = 100 - direct;
+        } else {
+            document.getElementById('indirect').value = "";
+        }
+    }
     </script>
     
     
